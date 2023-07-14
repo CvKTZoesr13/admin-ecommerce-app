@@ -215,6 +215,7 @@ const MainLayout = () => {
             style={{
               top: "90px",
               right: "84px",
+              zIndex: 99999,
             }}
           />
           <br />

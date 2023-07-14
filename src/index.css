@@ -12,6 +12,17 @@ body {
 }
 main {
   overflow-y: scroll;
+  height: 80vh;
+  background-color: transparent !important;
+}
+main::-webkit-scrollbar {
+  width: 0 !important;
+}
+.ant-layout-sider::-webkit-scrollbar {
+  width: 0 !important;
+}
+.ant-layout-sider {
+  -ms-overflow-style: none;
 }
 .logo {
   /* background-image: linear-gradient(
