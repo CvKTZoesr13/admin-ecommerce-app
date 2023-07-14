@@ -3,7 +3,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { BiSolidDashboard } from "react-icons/bi";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { Layout, Menu, Button, theme, Switch } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsListCheck, BsViewList } from "react-icons/bs";
 import { BiCategoryAlt, BiSolidPlusCircle } from "react-icons/bi";
 import { MdOutlineLabel } from "react-icons/md";
@@ -72,6 +72,7 @@ const MainLayout = () => {
             mode="inline"
             defaultSelectedKeys={[current]}
             onClick={({ key }) => {
+              document.querySelector("main").scrollTo(0, 0);
               setCurrent(key);
               if (key === "signout") {
               } else {
@@ -215,7 +216,7 @@ const MainLayout = () => {
             style={{
               top: "90px",
               right: "84px",
-              zIndex: 99999,
+              zIndex: 999,
             }}
           />
           <br />
@@ -242,10 +243,41 @@ const MainLayout = () => {
                 }}
               />
             </div>
-            <div className="d-flex flex-column">
+            <div
+              className="d-flex flex-column no-select"
+              role="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style={{ cursor: "pointer" }}
+            >
               <h5 className="text-dark mb-0">CvKTZoeSr</h5>
               <p className="mb-0 lh-normal">vanducdo4@gmail.com</p>
             </div>
+            <ul
+              style={{ zIndex: 9999 }}
+              className="dropdown-menu"
+              aria-labelledby="dropdownMenuLink"
+            >
+              <li>
+                <Link
+                  style={{ height: "auto", lineHeight: "20px" }}
+                  className="dropdown-item py-1 mb-1   sub-title"
+                  to={"/account/details"}
+                >
+                  Thông tin tài khoản
+                </Link>
+              </li>
+              <li>
+                <Link
+                  style={{ height: "auto", lineHeight: "20px" }}
+                  className="dropdown-item py-1 mb-1 sub-title"
+                  to={"/logout"}
+                >
+                  Đăng xuất
+                </Link>
+              </li>
+            </ul>
           </div>
         </Header>
         <Content
