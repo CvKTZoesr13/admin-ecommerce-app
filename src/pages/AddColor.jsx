@@ -4,7 +4,7 @@ import CustomInput from "../components/CustomInput";
 const AddColor = () => {
   return (
     <div>
-      <h3 className="mb-4">Thêm màu</h3>
+      <h3 className="mb-4 title">Thêm màu</h3>
       <div>
         <form action="">
           <CustomInput type="color" placeholder="Nhấn vào đây để thêm màu" />

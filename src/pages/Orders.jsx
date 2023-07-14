@@ -36,7 +36,7 @@ const Orders = () => {
   }
   return (
     <div>
-      <h3 className="mb-4">Đơn hàng</h3>
+      <h3 className="mb-4 title">Đơn hàng</h3>
       <div>
         <Table columns={columns} dataSource={dataTable} />
       </div>

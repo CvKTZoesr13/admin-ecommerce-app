@@ -124,54 +124,57 @@ const Dashboard = () => {
   };
   return (
     <div>
-      <h3 className="mb-4">Dashboard</h3>
+      <h3 className="mb-4 title">Dashboard</h3>
       <div className="d-flex justify-content-between align-items-center gap-3">
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded-3">
           <div>
-            <p className="">Total</p> <h4 className="mb-0">$10000</h4>
+            <p className="sub-title">Total</p>{" "}
+            <h4 className="mb-0 sub-title">$10000</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="red">
               <BsArrowDownRight />
               32%
             </h6>
-            <p className="mb-0">So với tháng 5 năm 2023</p>
+            <p className="mb-0 sub-title">So với tháng 5 năm 2023</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded-3">
           <div>
-            <p className="">Total</p> <h4 className="mb-0">$10000</h4>
+            <p className="sub-title">Total</p>{" "}
+            <h4 className="mb-0 sub-title">$10000</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="green">
               <BsArrowUpRight />
               32%
             </h6>
-            <p className="mb-0">So với tháng 5 năm 2023</p>
+            <p className="mb-0 sub-title">So với tháng 5 năm 2023</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded-3">
           <div>
-            <p className="">Total</p> <h4 className="mb-0">$10000</h4>
+            <p className="sub-title">Total</p>{" "}
+            <h4 className="mb-0 sub-title">$10000</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="red">
               <BsArrowDownRight />
               32%
             </h6>
-            <p className="mb-0">So với tháng 5 năm 2023</p>
+            <p className="mb-0 sub-title">So với tháng 5 năm 2023</p>
           </div>
         </div>
       </div>
       <div className="mt-4">
         {/* Income statics */}
-        <h3 className="mb-4">Thống kê thu nhập</h3>
+        <h3 className="mb-4 title">Thống kê thu nhập</h3>
         <div>
           <Column {...config} />
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="mb-4">Đơn hàng gần đây</h3>
+        <h3 className="mb-4 title">Đơn hàng gần đây</h3>
         <div>
           <Table
             // rowSelection={{

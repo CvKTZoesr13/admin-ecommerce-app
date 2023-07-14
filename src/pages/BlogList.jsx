@@ -36,7 +36,7 @@ const BlogList = () => {
   }
   return (
     <div>
-      <h3 className="mb-4">Danh sách bài viết</h3>
+      <h3 className="mb-4 title">Danh sách bài viết</h3>
       <div>
         <Table columns={columns} dataSource={dataTable} />
       </div>

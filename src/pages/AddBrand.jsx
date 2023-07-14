@@ -4,7 +4,7 @@ import CustomInput from "../components/CustomInput";
 const AddBrand = () => {
   return (
     <div>
-      <h3 className="mb-4">Thêm thương hiệu sản phẩm</h3>
+      <h3 className="mb-4 title">Thêm thương hiệu sản phẩm</h3>
       <div>
         <form action="">
           <CustomInput

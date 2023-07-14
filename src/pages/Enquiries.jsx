@@ -36,7 +36,7 @@ const Enquiries = () => {
   }
   return (
     <div>
-      <h3 className="mb-4">Đánh giá gần đây</h3>
+      <h3 className="mb-4 title">Đánh giá gần đây</h3>
       <div>
         <Table columns={columns} dataSource={dataTable} />
       </div>
