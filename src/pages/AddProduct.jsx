@@ -3,7 +3,6 @@ import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
-// import { Stepper } from "react-form-stepper";
 import "react-quill/dist/quill.snow.css";
 const { Dragger } = Upload;
 const props = {
@@ -25,24 +24,53 @@ const props = {
     console.log("Dropped files", e.dataTransfer.files);
   },
 };
-const AddBlog = () => {
+const AddProduct = () => {
   const [desc, setDesc] = useState("");
   const handleDesc = (e) => {
     setDesc(e);
   };
   return (
     <div>
-      <h3 className="mb-4 title">Tạo bài viết</h3>
-      {/* <Stepper
-        steps={[
-          { label: "Thêm nội dung" },
-          { label: "Tải lên ảnh bìa" },
-          { label: "Hoàn thành" },
-        ]}
-        activeStep={1}
-      /> */}
+      <h3 className="mb-4 title">Thêm sản phẩm</h3>
       <div>
         <form action="">
+          <CustomInput type="text" placeholder="Nhập tiêu đề sản phẩm" />
+          <div className="mb-3">
+            {/* <h4>Thêm mô tả</h4> */}
+            <ReactQuill
+              theme="snow"
+              value={desc}
+              onChange={(e) => {
+                handleDesc(e);
+              }}
+            />
+          </div>
+          <CustomInput type="number" placeholder="Nhập giá bán" />
+          <select
+            className="form-control py-3 mb-3"
+            defaultValue={""}
+            name=""
+            id=""
+          >
+            <option value="">Chọn thương hiệu</option>
+          </select>
+          <select
+            className="form-control py-3 mb-3"
+            defaultValue={""}
+            name=""
+            id=""
+          >
+            <option value="">Chọn danh mục</option>
+          </select>
+          <select
+            className="form-control py-3 mb-3"
+            defaultValue={""}
+            name=""
+            id=""
+          >
+            <option value="">Chọn màu sắc</option>
+          </select>
+          <CustomInput type="number" placeholder="Nhập số lượng có" />
           <Dragger {...props}>
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
@@ -55,32 +83,11 @@ const AddBlog = () => {
               uploading company data or other banned files.
             </p>
           </Dragger>
-
-          <CustomInput
-            type="text"
-            className="mt-4"
-            placeholder="Nhập tiêu đề bài viết"
-          />
-          <select
-            className="form-control py-3 mb-3"
-            defaultValue={"Chọn danh mục"}
-            name=""
-            id=""
-          >
-            <option value="">Chọn danh mục</option>
-          </select>
-          <ReactQuill
-            theme="snow"
-            value={desc}
-            onChange={(e) => {
-              handleDesc(e);
-            }}
-          />
           <button
             type="submit"
             className="btn btn-success border-0 rounded-3 mt-3 float-end"
           >
-            Tạo bài viết
+            Xác nhận
           </button>
         </form>
       </div>
@@ -88,4 +95,4 @@ const AddBlog = () => {
   );
 };
 
-export default AddBlog;
+export default AddProduct;

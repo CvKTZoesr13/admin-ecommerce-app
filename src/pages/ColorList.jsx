@@ -36,7 +36,7 @@ const ColorList = () => {
   }
   return (
     <div>
-      <h3 className="mb-4">Bảng màu</h3>
+      <h3 className="mb-4 title">Bảng màu</h3>
       <div>
         <Table columns={columns} dataSource={dataTable} />
       </div>

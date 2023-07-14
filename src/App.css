@@ -1,11 +1,29 @@
+:root {
+  --color-212529: #212529;
+  --color-ffd333: #ffd333;
+  --color-47ad24: #47ad24;
+  --color-e52e2e: #e52e2e;
+  --color-828599: #828599;
+  --color-3d464d: #3d464d;
+  --color-c3c4da: #c3c4da;
+}
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
 body {
   font-family: "Nunito", sans-serif;
 }
 .green {
-  color: green;
+  color: var(--color-47ad24);
 }
 .red {
-  color: red;
+  color: var(--color-e52e2e);
 }
 
 .quill {
@@ -24,4 +42,13 @@ body {
 .ql-preview,
 .ql-snow {
   border-radius: 0.5rem;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: "Nunito", sans-serif !important;
+}
+.sub-title {
+  font-family: "Nunito", sans-serif !important;
 }

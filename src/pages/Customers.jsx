@@ -36,7 +36,7 @@ const Customers = () => {
   }
   return (
     <div>
-      <h3 className="mb-4">Danh sách khách hàng</h3>
+      <h3 className=" title mb-4">Danh sách khách hàng</h3>
       <div>
         <Table columns={columns} dataSource={dataTable} />
       </div>
