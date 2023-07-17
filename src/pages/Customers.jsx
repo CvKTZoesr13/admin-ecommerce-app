@@ -1,10 +1,18 @@
 import { Table } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../features/customers/customerSlice";
 
 const Customers = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
+
+  const customerState = useSelector((state) => state.customers.customers);
   const columns = [
     {
-      title: "SNo",
+      title: "STT",
       dataIndex: "key",
       render: (text) => (
         <a href="#!" className="text-decoration-none text-dark">
@@ -13,26 +21,34 @@ const Customers = () => {
       ),
     },
     {
-      title: "Tên",
+      title: "Họ Tên",
       dataIndex: "name",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.name.length - b.name.length,
     },
     {
-      title: "Sản phẩm",
-      dataIndex: "product",
+      title: "Email",
+      dataIndex: "email",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.email.length - b.email.length,
     },
     {
-      title: "Trạng thái",
-      dataIndex: "status",
+      title: "Số điện thoại",
+      dataIndex: "mobile",
     },
   ];
   const dataTable = [];
-  for (let i = 0; i < 46; i++) {
-    dataTable.push({
-      key: i,
-      name: "John Brown " + i,
-      product: 32,
-      status: "New York No. 1 Lake Park",
-    });
+  let j = 0;
+  for (let i = (j = 0); i < customerState.length; i++) {
+    if (customerState[i].isAdmin !== "admin") {
+      j++;
+      dataTable.push({
+        key: j,
+        name: customerState[i].firstName + " " + customerState[i].lastName,
+        email: customerState[i].email,
+        mobile: customerState[i].mobile,
+      });
+    }
   }
   return (
     <div>
