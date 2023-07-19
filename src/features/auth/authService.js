@@ -13,7 +13,7 @@ const getOrders = async () => {
   if (localStorage.getItem("user")) {
     setAuthToken(JSON.parse(localStorage.getItem("user")).accessToken);
   }
-  const response = await axios.get(`${BASE_URL}user/get-orders`);
+  const response = await axios.get(`${BASE_URL}user/all-orders-all-users`);
   return response.data;
 };
 

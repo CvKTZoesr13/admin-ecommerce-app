@@ -56,3 +56,11 @@ body {
   background: url("./assets/static/img/landing (2).jpg") no-repeat center
     center/cover;
 }
+.spin-modal {
+  margin: 20px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  text-align: center;
+  background: rgba(0, 0, 0, 1);
+  border-radius: 4px;
+}
