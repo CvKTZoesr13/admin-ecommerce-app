@@ -1,10 +1,20 @@
 import { Table } from "antd";
-import React from "react";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getBlogs } from "../features/blogs/blogSlice";
+import { Link } from "react-router-dom";
+import { BiEditAlt } from "react-icons/bi";
+import { AiFillDelete } from "react-icons/ai";
 const BlogList = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getBlogs());
+  }, [dispatch]);
+
+  const getBlogState = useSelector((state) => state.blogs.blogs);
   const columns = [
     {
-      title: "SNo",
+      title: "STT",
       dataIndex: "key",
       render: (text) => (
         <a href="#!" className="text-decoration-none text-dark">
@@ -13,25 +23,34 @@ const BlogList = () => {
       ),
     },
     {
-      title: "Tên",
+      title: "Tiêu đề",
       dataIndex: "name",
     },
     {
-      title: "Sản phẩm",
-      dataIndex: "product",
+      title: "Danh mục bài viết",
+      dataIndex: "category",
     },
     {
-      title: "Trạng thái",
-      dataIndex: "status",
+      title: "Tùy chỉnh",
+      dataIndex: "action",
     },
   ];
   const dataTable = [];
-  for (let i = 0; i < 46; i++) {
+  for (let i = 0; i < getBlogState.length; i++) {
     dataTable.push({
-      key: i,
-      name: "John Brown " + i,
-      product: 32,
-      status: "New York No. 1 Lake Park",
+      key: i + 1,
+      name: getBlogState[i].title,
+      category: getBlogState[i].category,
+      action: (
+        <>
+          <Link className="fs-3 ">
+            <BiEditAlt />
+          </Link>
+          <Link className="fs-3  text-danger">
+            <AiFillDelete />
+          </Link>
+        </>
+      ),
     });
   }
   return (

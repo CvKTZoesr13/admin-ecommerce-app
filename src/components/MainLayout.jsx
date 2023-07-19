@@ -219,8 +219,8 @@ const MainLayout = () => {
               zIndex: 999,
             }}
           />
-          <br />
-          <br />
+          {/* <br />
+          <br /> */}
           <div className="d-flex gap-3 align-items-center justify-content-between">
             <div
               className="position-relative d-flex"

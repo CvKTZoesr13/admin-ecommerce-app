@@ -1,10 +1,19 @@
 import { Table } from "antd";
-import React from "react";
-
+import React, { useEffect } from "react";
+import { getColors } from "../features/color/colorSlice";
+import { AiFillDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { BiEditAlt } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
 const ColorList = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getColors());
+  }, [dispatch]);
+  const colorState = useSelector((state) => state.colors.colors);
   const columns = [
     {
-      title: "SNo",
+      title: "STT",
       dataIndex: "key",
       render: (text) => (
         <a href="#!" className="text-decoration-none text-dark">
@@ -13,25 +22,29 @@ const ColorList = () => {
       ),
     },
     {
-      title: "Tên",
+      title: "Tên màu",
       dataIndex: "name",
     },
     {
-      title: "Sản phẩm",
-      dataIndex: "product",
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
+      title: "Tùy chỉnh",
+      dataIndex: "action",
     },
   ];
   const dataTable = [];
-  for (let i = 0; i < 46; i++) {
+  for (let i = 0; i < colorState.length; i++) {
     dataTable.push({
-      key: i,
-      name: "John Brown " + i,
-      product: 32,
-      status: "New York No. 1 Lake Park",
+      key: i + 1,
+      name: colorState[i].title,
+      action: (
+        <>
+          <Link className="fs-3 ">
+            <BiEditAlt />
+          </Link>
+          <Link className="fs-3  text-danger">
+            <AiFillDelete />
+          </Link>
+        </>
+      ),
     });
   }
   return (

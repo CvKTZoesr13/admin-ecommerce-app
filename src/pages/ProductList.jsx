@@ -1,11 +1,21 @@
 import { Table } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { BiEditAlt } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../features/product/productSlice";
+import CurrencyVNDFormat from "../utils/CurrencyVNDFormat";
+import { Link } from "react-router-dom";
 const ProductList = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  const productState = useSelector((state) => state.products.products);
   const columns = [
     {
-      title: "SNo",
+      title: "STT",
       dataIndex: "key",
       render: (text) => (
         <a href="#!" className="text-decoration-none text-dark">
@@ -14,25 +24,53 @@ const ProductList = () => {
       ),
     },
     {
-      title: "Tên",
-      dataIndex: "name",
-    },
-    {
       title: "Sản phẩm",
-      dataIndex: "product",
+      dataIndex: "title",
+      sorter: (a, b) => a.title.length - b.title.length,
     },
     {
-      title: "Trạng thái",
-      dataIndex: "status",
+      title: "Thương hiệu",
+      dataIndex: "brand",
+      sorter: (a, b) => a.brand.length - b.brand.length,
+    },
+    {
+      title: "Danh mục",
+      dataIndex: "category",
+      sorter: (a, b) => a.category.length - b.category.length,
+    },
+    {
+      title: "Màu sắc",
+      dataIndex: "color",
+    },
+    {
+      title: "Giá bán",
+      dataIndex: "price",
+      sorter: (a, b) => a.price - b.price,
+    },
+    {
+      title: "Tùy chỉnh",
+      dataIndex: "action",
     },
   ];
   const dataTable = [];
-  for (let i = 0; i < 46; i++) {
+  for (let i = 0; i < productState.length; i++) {
     dataTable.push({
-      key: i,
-      name: "John Brown " + i,
-      product: 32,
-      status: "New York No. 1 Lake Park",
+      key: i + 1,
+      title: productState[i].title,
+      brand: productState[i].brand,
+      category: productState[i].category,
+      color: productState[i].color,
+      price: <CurrencyVNDFormat value={productState[i].price} />,
+      action: (
+        <>
+          <Link className="fs-3 ">
+            <BiEditAlt />
+          </Link>
+          <Link className="fs-3  text-danger">
+            <AiFillDelete />
+          </Link>
+        </>
+      ),
     });
   }
   return (
