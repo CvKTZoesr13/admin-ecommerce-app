@@ -31,7 +31,7 @@ const Login = () => {
   );
   useEffect(() => {
     if (!user == null || isSuccess) {
-      navigate("admin");
+      navigate("/admin");
     } else {
       navigate("");
     }

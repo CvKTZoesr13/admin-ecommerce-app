@@ -8,6 +8,7 @@ import blogReducer from "../features/blogs/blogSlice";
 import pCategoryReducer from "../features/pcategory/pcategorySlice";
 import bCategoryReducer from "../features/bcategory/bcategorySlice";
 import enquiryReducer from "../features/enquiry/enquirySlice";
+import uploadReducer from "../features/upload/uploadSlice";
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -33,5 +34,6 @@ export const store = configureStore({
     colors: colorReducer,
     blogs: blogReducer,
     enquiries: enquiryReducer,
+    uploads: uploadReducer,
   },
 });
