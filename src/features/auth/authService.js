@@ -6,6 +6,8 @@ const login = async (userData) => {
   const response = await axios.post(`${BASE_URL}user/login-admin`, userData);
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
+  } else {
+    localStorage.clear();
   }
   return response.data;
 };

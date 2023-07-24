@@ -59,7 +59,13 @@ const ProductList = () => {
       title: productState[i].title,
       brand: productState[i].brand,
       category: productState[i].category,
-      color: productState[i].color,
+      color: (
+        <ul className="list-unstyled mb-0">
+          {productState[i].color.map((colorObj, index) => {
+            return <li key={index}>{colorObj.color}</li>;
+          })}
+        </ul>
+      ),
       price: <CurrencyVNDFormat value={productState[i].price} />,
       action: (
         <>

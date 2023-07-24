@@ -9,19 +9,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBrands } from "../features/brand/brandSlice";
 import { getProductCategories } from "../features/pcategory/pcategorySlice";
 import { getColors } from "../features/color/colorSlice";
-import "react-widgets/styles.css";
-import Multiselect from "react-widgets/Multiselect";
+import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
 import { createProducts } from "../features/product/productSlice";
 import { removeByAttr } from "../utils/removeByAttr";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tên sản phẩm."),
   description: Yup.string().required("Vui lòng nhập mô tả."),
   price: Yup.number().required("Vui lòng nhập giá bán."),
   brand: Yup.string().required("Vui lòng chọn thương hiệu."),
   category: Yup.string().required("Vui lòng chọn danh mục."),
-  color: Yup.array().required("Vui lòng chọn màu sắc."),
+  tags: Yup.string().required("Vui lòng chọn tag."),
+  color: Yup.array()
+    .min(1, "Vui lòng chọn ít nhất 1 màu")
+    .required("Vui lòng chọn màu sắc."),
   quantity: Yup.number().required("Vui lòng nhập số lượng."),
 });
 
@@ -29,8 +34,8 @@ const AddProduct = () => {
   console.log("render");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [color, setColor] = useState([]);
-
   // const [images, setImages] = useState([]);
   useEffect(() => {
     dispatch(getBrands());
@@ -41,14 +46,42 @@ const AddProduct = () => {
   const catState = useSelector((state) => state.pCategories.pCategories);
   const colorState = useSelector((state) => state.colors.colors);
   const imgState = useSelector((state) => state.uploads.images);
-
-  const colors = [];
+  const newProduct = useSelector((state) => state.products);
+  const { isSuccess, isLoading, isError, createdProduct } = newProduct;
+  useEffect(() => {
+    if (isSuccess && createdProduct !== "") {
+      toast("Thêm sản phẩm mới thành công!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    if (isError) {
+      toast("Có lỗi xảy ra!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }, [isSuccess, isLoading, isError, createdProduct]);
+  const colorOption = [];
   colorState.forEach((item) => {
-    colors.push({
-      _id: item._id,
-      color: item.title,
+    colorOption.push({
+      label: item.title,
+      value: item._id,
     });
   });
+  console.log(colorOption);
   // const img = useMemo(() => {
   //   let img = [];
   //   return img;
@@ -75,18 +108,38 @@ const AddProduct = () => {
       color: "",
       quantity: "",
       images: "",
+      tags: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
       dispatch(createProducts(values));
       img.length = 0;
+      formik.resetForm();
+      setColor(null);
+      setTimeout(() => {
+        // todo
+        navigate("/admin/product-list");
+      }, 3000);
     },
   });
+  const handleColors = (e) => {
+    setColor(e);
+  };
   useEffect(() => {
-    formik.values.color = color;
+    formik.values.color = color
+      ? [
+          ...color?.map((c) => {
+            return {
+              _id: c,
+              color: colorState.filter((colorItem) => colorItem._id === c)[0]
+                .title,
+            };
+          }),
+        ]
+      : " ";
     formik.values.images = img;
-  }, [formik.values, color, img]);
+  }, [formik.values, color, img, colorState]);
   return (
     <div>
       <h3 className="mb-4 title">Thêm sản phẩm</h3>
@@ -174,14 +227,34 @@ const AddProduct = () => {
           <div className="text-danger">
             {formik.touched.category && formik.errors.category}
           </div>
-          <Multiselect
-            dataKey="id"
-            textField="color"
-            data={colors}
-            onChange={(e) => {
-              console.log(e, colors);
-              setColor(e);
-            }}
+          <select
+            className="form-control py-3"
+            name="tags"
+            onChange={formik.handleChange("tags")}
+            onBlur={formik.handleBlur("tags")}
+            value={formik.values.tags}
+            id=""
+          >
+            <option value="" disabled>
+              Chọn tag
+            </option>
+            <option value="featured">Featured</option>
+            <option value="popular">Popular</option>
+            <option value="special">Special</option>
+          </select>
+          <div className="text-danger">
+            {formik.touched.tags && formik.errors.tags}
+          </div>
+
+          <Select
+            mode="multiple"
+            allowClear
+            className="w-100"
+            placeholder="Chọn màu sắc"
+            defaultValue={color}
+            onChange={(i) => handleColors(i)}
+            showSearch={false}
+            options={colorOption}
           />
           <div className="text-danger">
             {formik.touched.color && formik.errors.color}

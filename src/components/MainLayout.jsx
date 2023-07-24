@@ -13,6 +13,8 @@ import { RiQuillPenLine } from "react-icons/ri";
 import { TbMessage2Exclamation } from "react-icons/tb";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [themeSwitch, setThemeSwitch] = useState("dark");
@@ -26,7 +28,6 @@ const MainLayout = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   const navigate = useNavigate();
   return (
     <Layout>
@@ -288,6 +289,18 @@ const MainLayout = () => {
             background: colorBgContainer,
           }}
         >
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <Outlet />
         </Content>
       </Layout>
