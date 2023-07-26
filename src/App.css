@@ -16,7 +16,8 @@
   user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
-body {
+body,
+input {
   font-family: "Nunito", sans-serif;
 }
 .green {
