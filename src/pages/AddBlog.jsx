@@ -9,9 +9,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { getBlogCategories } from "../features/bcategory/bcategorySlice";
-import { createBlogs } from "../features/blogs/blogSlice";
+import { createBlogs, resetState } from "../features/blogs/blogSlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tiêu đề bài viết."),
@@ -22,7 +22,7 @@ const AddBlog = () => {
   console.log("render");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const [images, setImages] = useState([]);
   useEffect(() => {
     dispatch(getBlogCategories());
@@ -89,7 +89,8 @@ const AddBlog = () => {
       formik.resetForm();
       setTimeout(() => {
         // todo
-        navigate("/admin/blog-list");
+        dispatch(resetState());
+        // navigate("/admin/blog-list");
       }, 3000);
     },
   });

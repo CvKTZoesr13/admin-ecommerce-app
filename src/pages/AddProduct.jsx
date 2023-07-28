@@ -12,9 +12,9 @@ import { getColors } from "../features/color/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
-import { createProducts } from "../features/product/productSlice";
+import { createProducts, resetState } from "../features/product/productSlice";
 import { removeByAttr } from "../utils/removeByAttr";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 let schema = Yup.object().shape({
@@ -34,7 +34,7 @@ const AddProduct = () => {
   console.log("render");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [color, setColor] = useState([]);
   // const [images, setImages] = useState([]);
   useEffect(() => {
@@ -119,7 +119,8 @@ const AddProduct = () => {
       setColor(null);
       setTimeout(() => {
         // todo
-        navigate("/admin/product-list");
+        dispatch(resetState());
+        // navigate("/admin/product-list");
       }, 3000);
     },
   });

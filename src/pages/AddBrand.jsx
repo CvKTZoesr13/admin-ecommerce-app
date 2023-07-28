@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createBrand } from "../features/brand/brandSlice";
+import { createBrand, resetState } from "../features/brand/brandSlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tên thương hiệu."),
@@ -23,11 +23,12 @@ const AddBrand = () => {
       formik.resetForm();
       setTimeout(() => {
         // todo
-        navigate("/admin/list-brand");
+        dispatch(resetState());
+        // navigate("/admin/list-brand");
       }, 3000);
     },
   });
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const newBrand = useSelector((state) => state.brands);
   const { isSuccess, isLoading, isError, createdBrand } = newBrand;
   useEffect(() => {

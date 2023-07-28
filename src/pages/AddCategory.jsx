@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createProductCategory } from "../features/pcategory/pcategorySlice";
+import {
+  createProductCategory,
+  resetState,
+} from "../features/pcategory/pcategorySlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tên danh mục sản phẩm."),
@@ -24,11 +27,12 @@ const AddCategory = () => {
       formik.resetForm();
       setTimeout(() => {
         // todo
-        navigate("/admin/list-category");
+        dispatch(resetState());
+        // navigate("/admin/list-category");
       }, 3000);
     },
   });
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const newCategory = useSelector((state) => state.pCategories);
   const { isSuccess, isLoading, isError, createdCategory } = newCategory;
   useEffect(() => {

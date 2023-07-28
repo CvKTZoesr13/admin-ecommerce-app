@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createColor } from "../features/color/colorSlice";
+import { createColor, resetState } from "../features/color/colorSlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng chọn màu sắc."),
@@ -24,11 +24,12 @@ const AddColor = () => {
       formik.resetForm();
       setTimeout(() => {
         // todo
-        navigate("/admin/list-color");
+        dispatch(resetState());
+        // navigate("/admin/list-color");
       }, 3000);
     },
   });
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const newColor = useSelector((state) => state.colors);
   const { isSuccess, isLoading, isError, createdColor } = newColor;
   useEffect(() => {

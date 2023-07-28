@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createBlogCategory } from "../features/bcategory/bcategorySlice";
+import {
+  createBlogCategory,
+  resetState,
+} from "../features/bcategory/bcategorySlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tên danh mục bài viết."),
@@ -23,16 +26,17 @@ const AddBlogCategory = () => {
       formik.resetForm();
       setTimeout(() => {
         // todo
-        navigate("/admin/blog-category-list");
+        dispatch(resetState());
+        // navigate("/admin/blog-category-list");
       }, 3000);
     },
   });
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const newBlogCategory = useSelector((state) => state.bCategories);
   const { isSuccess, isLoading, isError, createdBlogCategory } =
     newBlogCategory;
   useEffect(() => {
-    if (isSuccess && createdBlogCategory !== "") {
+    if (isSuccess && createdBlogCategory) {
       toast("Thêm danh mục mới thành công!", {
         position: "top-right",
         autoClose: 2500,
@@ -41,7 +45,7 @@ const AddBlogCategory = () => {
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
     }
     if (isError) {
@@ -53,7 +57,7 @@ const AddBlogCategory = () => {
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
     }
   }, [isSuccess, isLoading, isError, createdBlogCategory]);

@@ -9,7 +9,8 @@ import { BiCategoryAlt, BiSolidPlusCircle } from "react-icons/bi";
 import { MdOutlineLabel } from "react-icons/md";
 import { IoIosColorPalette, IoIosFolderOpen } from "react-icons/io";
 import { FiPackage } from "react-icons/fi";
-import { RiQuillPenLine } from "react-icons/ri";
+import { RiQuillPenLine, RiCouponLine } from "react-icons/ri";
+import { BsFillFileEarmarkTextFill } from "react-icons/bs";
 import { TbMessage2Exclamation } from "react-icons/tb";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { Outlet } from "react-router-dom";
@@ -30,7 +31,7 @@ const MainLayout = () => {
   } = theme.useToken();
   const navigate = useNavigate();
   return (
-    <Layout>
+    <Layout /*onContextMenu={(e) => e.preventDefault()}*/>
       <Sider trigger={null} collapsible collapsed={collapsed} width={280}>
         <Sider
           trigger={null}
@@ -152,7 +153,24 @@ const MainLayout = () => {
                 label: "Đơn hàng",
               },
               {
-                key: "1",
+                key: "marketing",
+                icon: <RiCouponLine className="fs-4" />,
+                label: "Marketing",
+                children: [
+                  {
+                    key: "coupon",
+                    icon: <BiSolidPlusCircle className="fs-4" />,
+                    label: "Thêm phiếu mua hàng",
+                  },
+                  {
+                    key: "coupon-list",
+                    icon: <BsFillFileEarmarkTextFill className="fs-4" />,
+                    label: "Danh sách phiếu mua hàng",
+                  },
+                ],
+              },
+              {
+                key: "blogs",
                 icon: <RiQuillPenLine className="fs-4" />,
                 label: "Bài viết",
                 children: [

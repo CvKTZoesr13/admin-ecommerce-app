@@ -1,29 +1,30 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import colorService from "./colorService";
+import couponService from "./couponService";
 
 const initialState = {
-  colors: [],
+  coupons: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: { message: "", error: { response: { status: null } } },
 };
 
-export const getColors = createAsyncThunk(
-  "color/get-colors",
+export const getAllCoupon = createAsyncThunk(
+  "coupon/get-coupons",
   async (thunkAPI) => {
     try {
-      return await colorService.getColors();
+      return await couponService.getCoupons();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const createColor = createAsyncThunk(
-  "color/create-color",
-  async (colorData, thunkAPI) => {
+
+export const createCoupon = createAsyncThunk(
+  "coupon/create-coupon",
+  async (couponData, thunkAPI) => {
     try {
-      return await colorService.createColor(colorData);
+      return await couponService.createCoupon(couponData);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -31,37 +32,38 @@ export const createColor = createAsyncThunk(
 );
 // reset state when creating process finished
 export const resetState = createAction("reset_all");
-export const colorSlice = createSlice({
-  name: "colors",
+
+export const couponSlice = createSlice({
+  name: "coupons",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getColors.pending, (state) => {
+      .addCase(getAllCoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getColors.fulfilled, (state, action) => {
+      .addCase(getAllCoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.colors = action.payload;
+        state.coupons = action.payload;
       })
-      .addCase(getColors.rejected, (state, action) => {
+      .addCase(getAllCoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(createColor.pending, (state) => {
+      .addCase(createCoupon.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createColor.fulfilled, (state, action) => {
+      .addCase(createCoupon.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createdColor = action.payload;
+        state.createdCoupon = action.payload;
       })
-      .addCase(createColor.rejected, (state, action) => {
+      .addCase(createCoupon.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -71,4 +73,4 @@ export const colorSlice = createSlice({
   },
 });
 
-export default colorSlice.reducer;
+export default couponSlice.reducer;

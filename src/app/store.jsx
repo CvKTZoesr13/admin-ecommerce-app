@@ -9,6 +9,7 @@ import pCategoryReducer from "../features/pcategory/pcategorySlice";
 import bCategoryReducer from "../features/bcategory/bcategorySlice";
 import enquiryReducer from "../features/enquiry/enquirySlice";
 import uploadReducer from "../features/upload/uploadSlice";
+import couponReducer from "../features/coupon/couponSlice";
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -35,5 +36,6 @@ export const store = configureStore({
     blogs: blogReducer,
     enquiries: enquiryReducer,
     uploads: uploadReducer,
+    coupons: couponReducer,
   },
 });
