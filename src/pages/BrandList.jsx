@@ -1,12 +1,28 @@
 import { Table } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBrands } from "../features/brand/brandSlice";
+import {
+  deleteABrand,
+  getBrands,
+  resetState,
+} from "../features/brand/brandSlice";
 import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { BiEditAlt } from "react-icons/bi";
+import CustomModal from "../components/CustomModal";
 const BrandList = () => {
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [brandId, setBrandId] = useState("");
+  const showModal = (title, brandId) => {
+    setIsModalOpen(true);
+    setModalTitle(title);
+    setBrandId(brandId);
+  };
+  const hideModal = () => {
+    setIsModalOpen(false);
+  };
   useEffect(() => {
     dispatch(getBrands());
   }, [dispatch]);
@@ -37,22 +53,46 @@ const BrandList = () => {
       name: brandState[i].title,
       action: (
         <>
-          <Link className="fs-3 ">
+          <Link
+            onClick={() => dispatch(resetState())}
+            to={`/admin/brand/${brandState[i]._id}`}
+            className="fs-3 "
+          >
             <BiEditAlt />
           </Link>
-          <Link className="fs-3  text-danger">
+          <button
+            className="fs-3 text-danger bg-transparent border-0"
+            onClick={() => {
+              return showModal(brandState[i].title, brandState[i]._id);
+            }}
+          >
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
+  const handleDeleteBrand = (brandId) => {
+    dispatch(deleteABrand(brandId));
+    // dispatch(resetState());
+    setTimeout(() => {
+      dispatch(getBrands());
+    }, 100);
+    setIsModalOpen(false);
+  };
+
   return (
     <div>
       <h3 className="mb-4 title">Danh sách thương hiệu</h3>
       <div>
         <Table columns={columns} dataSource={dataTable} />
       </div>
+      <CustomModal
+        hideModal={hideModal}
+        open={isModalOpen}
+        performAction={() => handleDeleteBrand(brandId)}
+        title={`Xác nhận xóa thương hiệu ${modalTitle}? `}
+      />
     </div>
   );
 };

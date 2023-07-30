@@ -3,6 +3,7 @@ import couponService from "./couponService";
 
 const initialState = {
   coupons: [],
+  createdCoupon: "",
   isError: false,
   isLoading: false,
   isSuccess: false,

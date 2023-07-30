@@ -3,6 +3,7 @@ import blogService from "./blogService";
 
 const initialState = {
   blogs: [],
+  createdBlog: "",
   isError: false,
   isLoading: false,
   isSuccess: false,

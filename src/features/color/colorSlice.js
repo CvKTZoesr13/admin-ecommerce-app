@@ -3,6 +3,7 @@ import colorService from "./colorService";
 
 const initialState = {
   colors: [],
+  createdColor: "",
   isError: false,
   isLoading: false,
   isSuccess: false,

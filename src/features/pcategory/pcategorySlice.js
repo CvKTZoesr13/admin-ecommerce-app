@@ -3,6 +3,7 @@ import pCategoryService from "./pcategoryService";
 
 const initialState = {
   pCategories: [],
+  createdCategory: "",
   isError: false,
   isLoading: false,
   isSuccess: false,

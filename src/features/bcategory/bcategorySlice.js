@@ -3,6 +3,7 @@ import bCategoryService from "./bcategoryService";
 
 const initialState = {
   bCategories: [],
+  createdBlogCategory: "",
   isError: false,
   isLoading: false,
   isSuccess: false,

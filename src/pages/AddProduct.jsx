@@ -81,7 +81,7 @@ const AddProduct = () => {
       value: item._id,
     });
   });
-  console.log(colorOption);
+  // console.log(colorOption);
   // const img = useMemo(() => {
   //   let img = [];
   //   return img;
