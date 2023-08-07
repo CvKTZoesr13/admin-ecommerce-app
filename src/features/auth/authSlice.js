@@ -30,6 +30,7 @@ export const getOrders = createAsyncThunk(
     try {
       return await authService.getOrders();
     } catch (error) {
+      // console.log(error, thunkAPI); - access denied -> thunkAPI changes to undefined
       return thunkAPI.rejectWithValue(error);
     }
   }

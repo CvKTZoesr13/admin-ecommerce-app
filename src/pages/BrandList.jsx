@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { BiEditAlt } from "react-icons/bi";
 import CustomModal from "../components/CustomModal";
 const BrandList = () => {
+  console.log("render");
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -24,6 +25,7 @@ const BrandList = () => {
     setIsModalOpen(false);
   };
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getBrands());
   }, [dispatch]);
   const brandState = useSelector((state) => state.brands.brands);
@@ -77,7 +79,7 @@ const BrandList = () => {
     // dispatch(resetState());
     setTimeout(() => {
       dispatch(getBrands());
-    }, 100);
+    }, 300);
     setIsModalOpen(false);
   };
 

@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createColor, resetState } from "../features/color/colorSlice";
+import {
+  createColor,
+  getAColor,
+  resetState,
+  updateAColor,
+} from "../features/color/colorSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng chọn màu sắc."),
@@ -13,25 +19,25 @@ let schema = Yup.object().shape({
 
 const AddColor = () => {
   const dispatch = useDispatch();
-  const formik = useFormik({
-    initialValues: {
-      title: "#ffffff",
-    },
-    validationSchema: schema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      dispatch(createColor(values));
-      formik.resetForm();
-      setTimeout(() => {
-        // todo
-        dispatch(resetState());
-        // navigate("/admin/list-color");
-      }, 3000);
-    },
-  });
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const getColorId = location.pathname.split("/")[3];
+  useEffect(() => {
+    if (getColorId !== undefined) {
+      dispatch(getAColor(getColorId));
+    } else {
+      dispatch(resetState());
+    }
+  }, [getColorId, dispatch]);
   const newColor = useSelector((state) => state.colors);
-  const { isSuccess, isLoading, isError, createdColor } = newColor;
+  const {
+    isSuccess,
+    isLoading,
+    isError,
+    createdColor,
+    updatedColor,
+    colorName,
+  } = newColor;
   useEffect(() => {
     if (isSuccess && createdColor !== "") {
       toast("Thêm màu mới thành công!", {
@@ -45,6 +51,19 @@ const AddColor = () => {
         theme: "light",
       });
     }
+    if (isSuccess && updatedColor) {
+      toast("Cập nhật màu thành công!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      navigate("/admin/list-color");
+    }
     if (isError) {
       toast("Có lỗi xảy ra!", {
         position: "top-right",
@@ -57,10 +76,35 @@ const AddColor = () => {
         theme: "light",
       });
     }
-  }, [isSuccess, isLoading, isError, createdColor]);
+  }, [isSuccess, isLoading, isError, createdColor, updatedColor, navigate]);
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      title: colorName || "#ffffff",
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      if (getColorId !== undefined) {
+        const data = { id: getColorId, colorData: values };
+        dispatch(updateAColor(data));
+        dispatch(resetState());
+      } else {
+        dispatch(createColor(values));
+        formik.resetForm();
+        setTimeout(() => {
+          // todo
+          dispatch(resetState());
+          // navigate("/admin/list-color");
+        }, 300);
+      }
+    },
+  });
   return (
     <div>
-      <h3 className="mb-4 title">Thêm màu</h3>
+      <h3 className="mb-4 title">
+        {getColorId !== undefined ? "Sửa" : "Thêm"} màu{" "}
+        {getColorId !== undefined ? colorName : ""}
+      </h3>
       <div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput

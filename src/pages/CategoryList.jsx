@@ -1,13 +1,30 @@
 import { Table } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductCategories } from "../features/pcategory/pcategorySlice";
+import {
+  deleteAProductCategory,
+  getProductCategories,
+  resetState,
+} from "../features/pcategory/pcategorySlice";
 import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { BiEditAlt } from "react-icons/bi";
+import CustomModal from "../components/CustomModal";
 const CategoryList = () => {
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [prodCategoryId, setProdCategoryId] = useState("");
+  const showModal = (title, prodCategoryId) => {
+    setIsModalOpen(true);
+    setModalTitle(title);
+    setProdCategoryId(prodCategoryId);
+  };
+  const hideModal = () => {
+    setIsModalOpen(false);
+  };
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getProductCategories());
   }, [dispatch]);
   const pCategoriesState = useSelector(
@@ -39,22 +56,48 @@ const CategoryList = () => {
       name: pCategoriesState[i].title,
       action: (
         <>
-          <Link className="fs-3 ">
+          <Link
+            onClick={() => dispatch(resetState())}
+            to={`/admin/category/${pCategoriesState[i]._id}`}
+            className="fs-3 "
+          >
             <BiEditAlt />
           </Link>
-          <Link className="fs-3  text-danger">
+          <button
+            className="fs-3 text-danger bg-transparent border-0"
+            onClick={() => {
+              return showModal(
+                pCategoriesState[i].title,
+                pCategoriesState[i]._id
+              );
+            }}
+          >
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
+  const handleDeleteProdCategory = (prodCategoryId) => {
+    dispatch(deleteAProductCategory(prodCategoryId));
+    // dispatch(resetState());
+    setTimeout(() => {
+      dispatch(getProductCategories());
+    }, 300);
+    setIsModalOpen(false);
+  };
   return (
     <div>
       <h3 className="mb-4 title">Danh sách danh mục</h3>
       <div>
         <Table columns={columns} dataSource={dataTable} />
       </div>
+      <CustomModal
+        hideModal={hideModal}
+        open={isModalOpen}
+        performAction={() => handleDeleteProdCategory(prodCategoryId)}
+        title={`Xác nhận xóa danh mục ${modalTitle}? `}
+      />
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { Table, Tag } from "antd";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import { AiFillDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiEditAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../features/auth/authSlice";
@@ -10,11 +10,12 @@ import CurrencyVNDFormat from "../utils/CurrencyVNDFormat";
 import network_err from "../assets/static/img/network_err.jpg";
 const Orders = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getOrders());
   }, [dispatch]);
   const orderState = useSelector((state) => state.auth.orders);
-  const { isLoading, isSuccess } = useSelector((state) => state.auth);
+  const { isLoading, isSuccess, message } = useSelector((state) => state.auth);
   const columns = [
     {
       title: "STT",
@@ -186,6 +187,17 @@ const Orders = () => {
       ),
     });
   }
+  const handleLoginAgain = useCallback(() => {
+    localStorage.clear();
+    navigate("/login");
+    window.location.reload();
+  }, [navigate]);
+  useEffect(() => {
+    if (message.message === "Rejected") {
+      // console.log(message);
+      handleLoginAgain();
+    }
+  }, [message, handleLoginAgain]);
   return (
     <div>
       <h3 className="mb-4 title">Đơn hàng</h3>
@@ -211,6 +223,11 @@ const Orders = () => {
             alt="network_disconnect"
           />
         )}
+        {/* {message.message === "Rejected" ? (
+          <button onClick={() => handleLoginAgain()}></button>
+        ) : (
+          <></>
+        )} */}
       </div>
     </div>
   );

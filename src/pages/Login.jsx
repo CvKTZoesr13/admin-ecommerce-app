@@ -46,7 +46,7 @@ const Login = () => {
         <p className="text-center">
           Đăng nhập để tiếp tục công việc với quyền quản trị hệ thống.
         </p>
-        {message.error.response.status === 500 ? (
+        {message?.error?.response?.status === 500 ? (
           <div
             className="text-center alert text-danger alert-danger"
             role="alert"
