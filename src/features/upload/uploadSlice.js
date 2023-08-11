@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import uploadService from "./uploadService";
 
 const initialState = {
@@ -33,7 +33,8 @@ export const delImg = createAsyncThunk(
     }
   }
 );
-
+// reset state when creating process finished
+export const resetState = createAction("reset_all");
 export const uploadSlice = createSlice({
   name: "images",
   initialState,
@@ -69,7 +70,8 @@ export const uploadSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.payload;
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

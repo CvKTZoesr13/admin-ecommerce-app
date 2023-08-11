@@ -1,4 +1,4 @@
-import React, { /*useState,*/ useEffect, useRef } from "react";
+import React, { /*useState,*/ useEffect, useMemo } from "react";
 import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
 
@@ -11,7 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 // import { useNavigate } from "react-router-dom";
 import { getBlogCategories } from "../features/bcategory/bcategorySlice";
-import { createBlogs, resetState } from "../features/blogs/blogSlice";
+import {
+  createBlogs,
+  getABlog,
+  resetState,
+  updateABlog,
+} from "../features/blogs/blogSlice";
+import { resetState as resetImgState } from "../features/upload/uploadSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tiêu đề bài viết."),
@@ -19,19 +26,52 @@ let schema = Yup.object().shape({
   category: Yup.string().required("Vui lòng chọn danh mục."),
 });
 const AddBlog = () => {
-  console.log("render");
-
+  // console.log("render");
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const [images, setImages] = useState([]);
-  useEffect(() => {
-    dispatch(getBlogCategories());
-  }, [dispatch]);
+  const location = useLocation();
+  const getBlogId = location.pathname.split("/")[3];
+  const navigate = useNavigate();
   const imgState = useSelector((state) => state.uploads.images);
   const bCatState = useSelector((state) => state.bCategories.bCategories);
-
   const newBlog = useSelector((state) => state.blogs);
-  const { isSuccess, isLoading, isError, createdBlog } = newBlog;
+  const {
+    isSuccess,
+    isLoading,
+    isError,
+    createdBlog,
+    updatedBlog,
+    blogCategory,
+    blogDesc,
+    blogTitle,
+    blogImages,
+  } = newBlog;
+  const img = useMemo(() => {
+    let img = [];
+    return img;
+  }, []);
+
+  useEffect(() => {
+    if (getBlogId !== undefined) {
+      dispatch(getABlog(getBlogId));
+      // blogImages?.forEach((item) => {
+      //   img.push({
+      //     public_id: item.public_id,
+      //     url: item.url,
+      //   });
+      // });
+      img.push(blogImages);
+      console.log("img", img, blogImages);
+    } else {
+      dispatch(resetState());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, getBlogId, img]);
+
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(getBlogCategories());
+  }, [dispatch]);
+
   useEffect(() => {
     if (isSuccess && createdBlog !== "") {
       toast("Thêm bài viết mới thành công!", {
@@ -45,6 +85,19 @@ const AddBlog = () => {
         theme: "light",
       });
     }
+    if (isSuccess && updatedBlog !== "") {
+      toast("Cập nhật thành công!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      navigate("/admin/blog-list");
+    }
     if (isError) {
       toast("Có lỗi xảy ra!", {
         position: "top-right",
@@ -57,14 +110,10 @@ const AddBlog = () => {
         theme: "light",
       });
     }
-  }, [isSuccess, isLoading, isError, createdBlog]);
-  // const img = useMemo(() => {
-  //   let img = [];
-  //   return img;
-  // }, []);
+  }, [isSuccess, isLoading, isError, createdBlog, updatedBlog, navigate]);
 
-  let imgRef = useRef([]);
-  let img = imgRef.current;
+  // let imgRef = useRef([]);
+  // let img = imgRef.current;
   // const img = [];
   useEffect(() => {
     imgState.forEach((item) => {
@@ -74,32 +123,43 @@ const AddBlog = () => {
       });
     });
   }, [imgState, img]);
+
   const formik = useFormik({
+    enableReinitialize: getBlogId !== undefined,
     initialValues: {
-      title: "",
-      description: "",
-      category: "",
-      images: "",
+      title: blogTitle || "",
+      description: blogDesc || "",
+      category: blogCategory || "",
+      images: blogImages || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
-      dispatch(createBlogs(values));
-      img.length = 0;
-      formik.resetForm();
-      setTimeout(() => {
-        // todo
+      if (getBlogId !== undefined) {
+        const data = { id: getBlogId, blogData: values };
+        dispatch(updateABlog(data));
         dispatch(resetState());
-        // navigate("/admin/blog-list");
-      }, 3000);
+      } else {
+        dispatch(createBlogs(values));
+        formik.resetForm();
+        setTimeout(() => {
+          // todo
+          dispatch(resetState());
+          dispatch(resetImgState());
+          // navigate("/admin/blog-list");
+        }, 300);
+      }
     },
   });
   useEffect(() => {
     formik.values.images = img;
-  }, [formik.values, img]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blogImages]);
   return (
     <div>
-      <h3 className="mb-4 title">Tạo bài viết</h3>
+      <h3 className="mb-4 title">
+        {getBlogId !== undefined ? "Sửa" : "Tạo"} bài viết
+      </h3>
       {/* <Stepper
         steps={[
           { label: "Thêm nội dung" },
@@ -205,7 +265,7 @@ const AddBlog = () => {
             type="submit"
             className="btn btn-success border-0 rounded-3 mt-3 float-end"
           >
-            Tạo bài viết
+            {getBlogId !== undefined ? "Cập nhật" : "Tạo bài viết"}
           </button>
         </form>
       </div>
