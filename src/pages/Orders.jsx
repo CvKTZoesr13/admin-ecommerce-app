@@ -1,9 +1,8 @@
 import { Table, Tag } from "antd";
 import React, { useCallback, useEffect } from "react";
 
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiOutlineEye } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { BiEditAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../features/auth/authSlice";
 import CurrencyVNDFormat from "../utils/CurrencyVNDFormat";
@@ -177,8 +176,11 @@ const Orders = () => {
       orderStatus: orderState[i].paymentIntent.status,
       action: (
         <>
-          <Link className="fs-3 ">
-            <BiEditAlt />
+          <Link
+            className="fs-3 "
+            to={`/admin/order/${orderState[i].orderby._id}`}
+          >
+            <AiOutlineEye />
           </Link>
           <Link className="fs-3  text-danger">
             <AiFillDelete />

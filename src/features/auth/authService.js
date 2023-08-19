@@ -19,9 +19,18 @@ const getOrders = async () => {
   return response.data;
 };
 
+const getOrder = async (id) => {
+  if (localStorage.getItem("user")) {
+    setAuthToken(JSON.parse(localStorage.getItem("user")).accessToken);
+  }
+  const response = await axios.post(`${BASE_URL}user/all-orders-an-user/${id}`);
+  return response.data;
+};
+
 const authService = {
   login,
   getOrders,
+  getOrder,
 };
 
 export default authService;
