@@ -52,31 +52,35 @@ const ViewOrders = () => {
   useEffect(() => {
     dispatch(getOrdersByUser(userId));
   }, [dispatch, userId]);
-  const orderState = useSelector(
-    (state) => state.auth.ordersByUser[1].products
-  );
+  // something work incorrectly here, need to be fixed later
+  const orderState = useSelector((state) => {
+    if (Array.isArray(state.auth.ordersByUser))
+      return state.auth?.ordersByUser[1].products;
+  });
   console.log(orderState);
   const data1 = [];
-  for (let i = 0; i < orderState.length; i++) {
-    data1.push({
-      key: i + 1,
-      name: orderState[i].product.title,
-      brand: orderState[i].product.brand,
-      count: orderState[i].count,
-      amount: orderState[i].product.price,
-      color: orderState[i].color,
-      date: orderState[i].product.createdAt,
-      action: (
-        <>
-          <Link to="/" className=" fs-3 text-danger">
-            <BiEdit />
-          </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
-          </Link>
-        </>
-      ),
-    });
+  if (Array.isArray(orderState)) {
+    for (let i = 0; i < orderState.length; i++) {
+      data1.push({
+        key: i + 1,
+        name: orderState[i].product.title,
+        brand: orderState[i].product.brand,
+        count: orderState[i].count,
+        amount: orderState[i].product.price,
+        color: orderState[i].color,
+        date: orderState[i].product.createdAt,
+        action: (
+          <>
+            <Link to="/" className=" fs-3 text-danger">
+              <BiEdit />
+            </Link>
+            <Link className="ms-3 fs-3 text-danger" to="/">
+              <AiFillDelete />
+            </Link>
+          </>
+        ),
+      });
+    }
   }
   return (
     <div>
